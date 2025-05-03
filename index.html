@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Translator App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    textarea, input {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #444;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌍 Language Translator</h1>
+    <textarea id="text" placeholder="Enter your text here..." rows="4"></textarea>
+    <input type="text" id="source_lang" placeholder="From (e.g. en)" />
+    <input type="text" id="target_lang" placeholder="To (e.g. fr)" />
+    <button onclick="translateText()">Translate</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function translateText() {
+      const text = document.getElementById("text").value;
+      const sourceLang = document.getElementById("source_lang").value;
+      const targetLang = document.getElementById("target_lang").value;
+
+      const response = await fetch('/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, source_lang: sourceLang, target_lang: targetLang })
+      });
+
+      const result = await response.json();
+      document.getElementById("result").innerText = result.translated_text;
+    }
+  </script>
+</body>
+</html>
